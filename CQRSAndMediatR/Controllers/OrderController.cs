@@ -1,4 +1,5 @@
 ﻿using Application.Commands;
+using Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -24,5 +25,13 @@ public class OrderController : ControllerBase
     {
         var id = await _mediator.Send(command);
         return Ok(id);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get(int id)
+    {
+        var result = await _mediator.Send(new GetOrderQuery(id));
+
+        return Ok(result);
     }
 }

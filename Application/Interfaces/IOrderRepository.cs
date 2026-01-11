@@ -4,8 +4,8 @@ namespace Application.Interfaces;
 
 public interface IOrderRepository
 {
-    public Order Get(int id);
-    public void Create(Order newOrder);
-    public void UpdateStauts(Order updatedOrder);
-    public void Update(Order updatedOrder);
+    Task<int> CreateAsync(Order newOrder);
+    Task<Order> GetByIdAsync(int id);
+    Task UpdateStauts(Order updatedOrder);
+    Task DeleteAsync(int id);   
 }
