@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Entities;
 using MediatR;
 
-namespace Application.Commands;
+namespace Application.Queries;
 
-public record CreateOrderCommand(Order order) : IRequest<int>;
+public record GetOrderQuery(int Id) : IRequest<string>;
 
