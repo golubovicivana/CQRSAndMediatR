@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Interfaces;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Queries;
 
-public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, string>
+public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, Order>
 {
-    public Task<string> Handle(GetOrderQuery request, CancellationToken cancellationToken)
+    private readonly IOrderRepository _orderRepository;
+
+    public GetOrderQueryHandler(IOrderRepository orderRepository)
     {
-        return Task.FromResult("Laptop");
+        _orderRepository = orderRepository;
+    }
+
+    public async Task<Order> Handle(GetOrderQuery request, CancellationToken cancellationToken)
+    {
+        return await _orderRepository.GetByIdAsync(request.Id);
     }
 }
 
