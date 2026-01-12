@@ -28,7 +28,7 @@ public class OrderRepository : IOrderRepository
     {
         return await _context.Orders.FindAsync(id);
     }
-    public async Task UpdateStauts(Order updatedOrder)
+    public async Task UpdateOrderAsync(Order updatedOrder)
     {
         _context.Orders.Update(updatedOrder);
         await _context.SaveChangesAsync();  
