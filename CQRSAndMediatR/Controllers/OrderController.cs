@@ -49,4 +49,17 @@ public class OrderController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{orderId}")]
+    public async Task<IActionResult> DeleteOrder(int orderId)
+    {
+        var command = new DeleteOrderCommand(orderId);
+        var success = await _mediator.Send(command);
+
+        if (!success)
+            return NotFound();
+
+        return Ok("Order is deleted");
+    }
+
 }
