@@ -36,17 +36,17 @@ public class OrderController : ControllerBase
         return result;
     }
 
-    [HttpPost("{orderId}")]
+    [HttpPut("{orderId}")]
     public async Task<IActionResult> UpdateOrder(int orderId, UpdateOrderCommand command)
     {
         if (orderId != command.order.OrderId)
             return BadRequest();
 
-        var result = await _mediator.Send(command);
+        var success = await _mediator.Send(command);
 
-        if (!result)
+        if (!success)
             return NotFound();
 
-        return Ok(result);
+        return NoContent();
     }
 }
