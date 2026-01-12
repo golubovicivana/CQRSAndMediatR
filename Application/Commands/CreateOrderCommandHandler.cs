@@ -1,11 +1,29 @@
-﻿using MediatR;
+﻿using Application.Interfaces;
+using Domain.Entities;
+using Domain.Enums;
+using MediatR;
 
 namespace Application.Commands;
 
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
 {
-    public Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    private readonly IOrderRepository _orderRepository;
+
+    public CreateOrderCommandHandler(IOrderRepository orderRepository)
     {
-        return Task.FromResult(1);
+        _orderRepository = orderRepository;
+    }
+    public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    {
+        var newOrder = new Order
+        {
+            ProductName = request.order.ProductName,
+            TotalAmount = request.order.TotalAmount,
+            UserId = request.order.UserId,
+            Created = DateTime.UtcNow,
+            Status = OrderStatus.Created
+        };
+
+        return await _orderRepository.CreateAsync(newOrder);
     }
 }

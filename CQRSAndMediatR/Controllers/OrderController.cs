@@ -1,5 +1,6 @@
 ﻿using Application.Commands;
 using Application.Queries;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -28,10 +29,10 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(int id)
+    public async Task<Order> Get(int id)
     {
         var result = await _mediator.Send(new GetOrderQuery(id));
 
-        return Ok(result);
+        return result;
     }
 }
