@@ -1,5 +1,5 @@
 # Implementacija i upotreba CQRS obrasca u .NET aplikaciji
-📜 ## Sadržaj:
+📜 Sadržaj:
 - [Uvod](#uvod)
 - [CQRS (Command Query Responsibility Segregation) obrazac](#cqrs-command-query-responsibility-segregation-obrazac)
 - [Clean Architecture](#clean-architecture)
