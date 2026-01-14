@@ -31,6 +31,37 @@ U praktičnim scenarijima često postoji razlika između struktura podataka koje
 
 Osnovna ideja CQRS obrasca jeste omogućavanje rada sa različitim modelima podataka za različite svrhe. U praksi, to znači postojanje posebnog modela za umetanje zapisa, drugog za ažuriranje zapisa i trećeg za izvršavanje upita nad podacima. Ovakav pristup omogućava veću fleksibilnost u obradi složenih scenarija i efikasniju i precizniju obradu podataka.
 ## 🏗️ Clean Architecture
+Clean Architecture predstavlja softverski dizajnerski pristup čiji je osnovni cilj izgradnja sistema koji su dugoročno održivi, fleksibilni i otporni na promene tehnologija. Ovaj arhitektonski stil teži sledećim osobinama:
+
+- Maintainability (održivost) – Sistem je lak za razumevanje, održavanje i izmenu, što omogućava uvođenje promena uz minimalan rizik od nastanka grešaka.
+
+- Testability (testabilnost) – Arhitektura je projektovana tako da omogućava jednostavno testiranje, uključujući kreiranje automatizovanih testova za pojedinačne delove sistema bez potrebe za spoljašnjim zavisnostima.
+
+- Flexibility (fleksibilnost) – Arhitektura ima mali broj zavisnosti od konkretnih tehnologija (baze podataka, veb okviri i slično), što olakšava izmene u osnovnoj poslovnoj logici sistema i uvođenje novih komponenti uz minimalno refaktorisanje.
+
+- Scalability (skalabilnost) – Modularni dizajn omogućava lakše skaliranje sistema, jer se pojedinačni slojevi ili komponente mogu optimizovati ili proširivati nezavisno. Na ovaj način sistem može da podrži rast broja korisnika bez potrebe za potpunim redizajnom.
+
+- Reusability (ponovna upotrebljivost) – Clean Architecture omogućava ponovnu upotrebu osnovnih poslovnih komponenti u različitim projektima ili na drugim platformama, zahvaljujući jasno definisanim zavisnostima između slojeva.
+
+- Long-term viability (dugoročna održivost) – Sistemi zasnovani na Clean Architecture pristupu lakše se prilagođavaju razvoju programskih jezika i tehnologija, čime se obezbeđuje dugoročna relevantnost i funkcionalnost sistema.
+
+- Ease of onboarding – Jasna podela odgovornosti i struktura sistema olakšavaju razumevanje arhitekture novim programerima, smanjujući vreme potrebno za uvođenje u projekat i povećavajući njihovu produktivnost.
+
+### Principi Clean Architecture
+Clean Architecture se zasniva na skupu osnovnih principa čiji je cilj kreiranje softverskih sistema koji su održivi, skalabilni i laki za razumevanje.
+- Pravilo zavisnosti (Dependency Rule) - Zavisnosti u sistemu treba da budu usmerene ka unutra, što znači da unutrašnji slojevi ne smeju zavisiti od spoljašnjih slojeva. Drugim rečima, osnovna poslovna logika aplikacije ne sme zavisiti od korisničkog interfejsa, baze podataka ili drugih infrastrukturnih komponenti. Ovo pravilo smanjuje povezanost (decoupling) i povećava fleksibilnost sistema.
+
+- Testabilnost (Testability) - Arhitektura treba da olakša testiranje poslovnih pravila. Apstrahovanjem pristupa spoljašnjim servisima i resursima omogućava se pisanje kvalitetnih jediničnih testova, pri čemu se osnovna logika može testirati bez oslanjanja na bazu podataka, mrežu ili druge eksterne zavisnosti.
+
+-Nezavisnost od spoljašnjih sistema (Independence of External Agencies) - Način funkcionisanja sistema ne bi trebalo da zavisi od spoljašnjih sistema. Ovim se omogućava razvoj i testiranje poslovne logike bez potrebe za uključivanjem eksternih elemenata, kao i veća stabilnost sistema nezavisno od stanja spoljašnjih komponenti.
+
+### Slojevita struktura Clean Architecture
+Clean Architecture predstavlja slojevitu arhitekturu koja deli sistem na četiri osnovna sloja, pri čemu svaki sloj ima jasno definisanu odgovornost i smer zavisnosti:
+- Doman
+- Appliaction
+- Infrastucture
+- Presentation 
+ 
 ## 🚚 MediatR biblioteka
 ## 📝 Implementacija operacija pisanja (Commands)
 ## 🔎 Implementacija operacija čitanja (Queries)
