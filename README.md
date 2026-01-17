@@ -149,6 +149,58 @@ U CQRS pristupu, operacije koje služe za čitanje podataka realizuju se pomoću
 4. Povratna vrednost – handler vraća rezultat (npr. entitet, lista entiteta ili agregirani podaci), koji se prosleđuje kontroleru i korisniku.
 
 ## 🚀 Pokretanje i demonstracija rada aplikacije
+Da biste pokrenuli lokalno, potrebno je imati instalirane sledeće alate:
+- .NET 8 SDK
+- SQL Server
+- Visal Studio 2022
+- ```bash dotnet tool install --global dotnet-ef ```
+## Preoporučeni NuGet paketi
+**API (CQRSAndMediatR.Api)**
+-MediatR
+-MediatR.Extensions.Microsoft.DependencyInjection
+-Swashbuckle.AspNetCore
+**Application (CQRSAndMediatR.Application)**
+-MediatR
+**Infrastructure (CQRSAndMediatR.Infrastructure)**
+- Microsoft.EntityFrameworkCore
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Design
+- Microsoft.EntityFrameworkCore.Tools
+### Instalacija paketa ###
+**API:**
+```bash
+dotnet add CQRSAndMediatR.Api package MediatR
+dotnet add CQRSAndMediatR.Api package MediatR.Extensions.Microsoft.DependencyInjection
+dotnet add CQRSAndMediatR.Api package Swashbuckle.AspNetCore
+```
+**Application:**
+```bash
+dotnet add CQRSAndMediatR.Application package MediatR
+dotnet add CQRSAndMediatR.Application package FluentValidation
+```
+**Infrastructure:**
+```bash
+dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore
+dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.Design
+```
+## Pokretanje API-ja
+Idite u API projekat:
+```bash
+cd CQRSAndMediatR
+```
+Pokrenite aplikaciju:
+```bash
+dotnet run
+```
+Nakon uspešnog pokretanja, aplikacija je dostupna lokalnom URL-u, npr: [http://localhost:4200](http://localhost:5056/swagger/index.html)
+Tamo možete:
+- Kreirati narudžbine (POST /api/orders)
+- Izmeniti narudžbine (PUT /api/orders/{orderId})
+- Obrišete narudžbine (DELETE /api/orders/{orderId})
+- Dohvatiti narudžbine (GET /api/orders)
+- Dohvatiti narudžbine po UsedId-u (GET /api/orders/user/{userId})
+  
 ## Prednosti i mane CQRS pristupa
 ### 🛠️ Problemi koje CQRS rešava
 - Pojednostavljeni objekti za prenos podataka - CQRS obrazac pojednostavljuje model podataka aplikacije korišćenjem odvojenih modela za svaku vrstu operacije, čime povećava flekisbilnost i smanjuje složenost.
