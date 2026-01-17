@@ -17,9 +17,9 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int
     {
         var newOrder = new Order
         {
-            ProductName = request.order.ProductName,
-            TotalAmount = request.order.TotalAmount,
-            UserId = request.order.UserId,
+            ProductName = request.productName,
+            TotalAmount = request.totalAmount,
+            UserId = request.userId,
             Created = DateTime.UtcNow,
             Status = OrderStatus.Created
         };

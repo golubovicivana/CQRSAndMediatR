@@ -20,14 +20,14 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, boo
 
     public async Task<bool> Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(command.order.OrderId);
+        var order = await _orderRepository.GetByIdAsync(command.OrderId);
         if (order == null)
             return default;
 
-        order.ProductName = command.order.ProductName;
-        order.UserId = command.order.UserId;
+        order.ProductName = command.productName;
+        order.UserId = command.userId;
         order.Created = DateTime.UtcNow;
-        order.TotalAmount = command.order.TotalAmount;
+        order.TotalAmount = command.totalAmount;
         order.Status = OrderStatus.Updated;
 
         await _orderRepository.UpdateOrderAsync(order);

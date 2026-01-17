@@ -37,17 +37,23 @@ public class OrderController : ControllerBase
     }
 
     [HttpPut("{orderId}")]
-    public async Task<IActionResult> UpdateOrder(int orderId, UpdateOrderCommand command)
+    public async Task<IActionResult> UpdateOrder(
+        int orderId,
+        [FromBody] UpdateOrderDto dto)
     {
-        if (orderId != command.order.OrderId)
-            return BadRequest();
+        var command = new UpdateOrderCommand(
+            orderId,          
+            dto.ProductName,
+            dto.UserId,
+            dto.TotalAmount
+        );
 
         var success = await _mediator.Send(command);
 
         if (!success)
             return NotFound();
 
-        return NoContent();
+        return Ok("Order is successfully updated!");
     }
 
     [HttpDelete("{orderId}")]
@@ -61,5 +67,18 @@ public class OrderController : ControllerBase
 
         return Ok("Order is deleted");
     }
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetOrdersByUser(int userId)
+    {
+        var query = new GetOrdersByUserIdQuery(userId);
+        var orders = await _mediator.Send(query);
+
+        if (orders.Count == 0)
+            return NotFound();
+
+        return Ok(orders);
+    }
+
+
 
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -41,5 +42,11 @@ public class OrderRepository : IOrderRepository
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
         }
+    }
+    public async Task<List<Order>> GetByUserIdAsync(int userId)
+    {
+        return await _context.Orders
+            .Where(o => o.UserId == userId)
+            .ToListAsync();
     }
 }

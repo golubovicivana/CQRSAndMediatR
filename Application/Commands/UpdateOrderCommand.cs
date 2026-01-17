@@ -1,8 +1,6 @@
-﻿using Domain.Entities;
-using Domain.Enums;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Commands;
 
-public record UpdateOrderCommand(Order order) : IRequest<bool>;
+public record UpdateOrderCommand(int OrderId, string productName, int userId, decimal totalAmount) : IRequest<bool>;
 
