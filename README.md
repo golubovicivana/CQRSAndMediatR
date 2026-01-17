@@ -156,33 +156,37 @@ Da biste pokrenuli lokalno, potrebno je imati instalirane sledeće alate:
 - ```bash dotnet tool install --global dotnet-ef ```
 ## Preoporučeni NuGet paketi
 **API (CQRSAndMediatR.Api)**
--MediatR
--MediatR.Extensions.Microsoft.DependencyInjection
--Swashbuckle.AspNetCore
+- MediatR
+- Microsoft.EntityFrameworkCore.Design
+- Swashbuckle.AspNetCore
+- Swashbuckle.AspNetCore.Annotations
+  
 **Application (CQRSAndMediatR.Application)**
--MediatR
+- MediatR
+  
 **Infrastructure (CQRSAndMediatR.Infrastructure)**
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.SqlServer
-- Microsoft.EntityFrameworkCore.Design
+- Microsoft.AspNetCore.Identity.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.Tools
 ### Instalacija paketa ###
 **API:**
 ```bash
 dotnet add CQRSAndMediatR.Api package MediatR
+dotnet add CQRSAndMediatR.Api package Microsoft.EntityFrameworkCore.Design
 dotnet add CQRSAndMediatR.Api package MediatR.Extensions.Microsoft.DependencyInjection
 dotnet add CQRSAndMediatR.Api package Swashbuckle.AspNetCore
 ```
 **Application:**
 ```bash
 dotnet add CQRSAndMediatR.Application package MediatR
-dotnet add CQRSAndMediatR.Application package FluentValidation
 ```
 **Infrastructure:**
 ```bash
 dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore
 dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.Design
+dotnet add CQRSAndMediatR.Infrastructure package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.Tools
 ```
 ## Pokretanje API-ja
 Idite u API projekat:
