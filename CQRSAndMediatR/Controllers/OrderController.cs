@@ -18,9 +18,6 @@ public class OrderController : ControllerBase
         _mediator = mediator;
     }
 
-    //[HttpGet("{id}")]
-    //[SwaggerOperation(Summary = "Return orders ID", Description = "Fetches all order IDs from the system.")]
-
     [HttpPost]
     public async Task<IActionResult> Create(CreateOrderCommand command)
     {
