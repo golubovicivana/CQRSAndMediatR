@@ -11,7 +11,7 @@
 - [Zaključak](#zaključak)
 - [Mogućnosti daljeg razvoja](#mogućnosti-daljeg-razvoja)
   
-## 📖 Uvod 
+<h2 id="uvod">📖 Uvod </h2> 
 
 Razvoj savremenih softverskih sistema zahteva jasno strukturisanu arhitekturu koja omogućava jednostavno održavanje, proširivost i razdvajanje odgovornosti između pojedinih delova aplikacije. Jedan od arhitektonskih obrazaca koji se često koristi u takvim sistemima je CQRS (Command Query Responsibility Segregation), čija je osnovna ideja razdvajanje operacija koje menjaju stanje sistema od operacija koje služe za čitanje podataka.
 
@@ -21,7 +21,7 @@ Projekat je organizovan u skladu sa principima Clean Architecture, kroz jasno de
 
 Cilj rada je da se prikaže način implementacije CQRS obrasca u .NET okruženju, kao i da se ukaže na prednosti i izazove ovakvog pristupa u razvoju aplikacija srednje složenosti. Kroz praktičan primer demonstrirano je kako se CQRS može efikasno kombinovati sa MediatR bibliotekom i principima čiste arhitekture radi izgradnje održivog i proširivog softverskog rešenja.
 
-## 🏛️ CQRS (Command Query Responsibility Segregation) obrazac
+<h2 id="cqrs-command-query-responsibility-segregation-obrazac">🏛️ CQRS (Command Query Responsibility Segregation) obrazac</h2> 
 
 ### Šta je CQRS?
 CQRS je skraćenica od Command Query Responsibility Segregation (Razdvajanje odgovornosti za komande i upite). To je softverski arhitektonski obrazac koji uvodi jasno razdvajanje između operacija pisanja (commands) i operacija čitanja (queries) podataka.
@@ -34,7 +34,7 @@ U praktičnim scenarijima često postoji razlika između struktura podataka koje
 
 Osnovna ideja CQRS obrasca jeste omogućavanje rada sa različitim modelima podataka za različite svrhe. U praksi, to znači postojanje posebnog modela za umetanje zapisa, drugog za ažuriranje zapisa i trećeg za izvršavanje upita nad podacima. Ovakav pristup omogućava veću fleksibilnost u obradi složenih scenarija i efikasniju i precizniju obradu podataka.
 
-## 🏗️ Clean Architecture
+<h2 id="clean-architecture">🏗️ Clean Architecture</h2> 
 
 Clean Architecture predstavlja softverski dizajnerski pristup čiji je osnovni cilj izgradnja sistema koji su dugoročno održivi, fleksibilni i otporni na promene tehnologija. Ovaj arhitektonski stil teži sledećim osobinama:
 
@@ -64,13 +64,13 @@ Clean Architecture se zasniva na skupu osnovnih principa čiji je cilj kreiranje
 ### Slojevita struktura Clean Architecture
 
 Clean Architecture predstavlja slojevitu arhitekturu koja deli sistem na četiri osnovna sloja, pri čemu svaki sloj ima jasno definisanu odgovornost i smer zavisnosti:
-- Doman                  
-- Appliaction
-- Infrastucture
+- Domain                  
+- Application
+- Infrastructure
 - Presentation
   
 <p align="center">
-  <img src="Screenshot 2026-01-14 230018.png" alt="CQRS dijagram" width="450" />
+  <img src="images/Screenshot 2026-01-14 230018.png" alt="CQRS dijagram" width="450" />
 </p>
 
 ### Domain sloj
@@ -111,7 +111,7 @@ Najvažniji deo prezentacionog sloja su:
 - DTO-ovi (Data Transfer Objects) – objekti koji prenose podatke između klijentskog i serverskog dela, odvajajući ih od domenskih entiteta.
 Prezentacioni sloj ne sadrži poslovnu logiku, već delegira sve operacije aplikacionom sloju.
 
-## 🚚 MediatR biblioteka
+<h2 id="mediatr-biblioteka"> 🚚 MediatR biblioteka</h2>
 MediatR je popularna open-source biblioteka u .NET okruženju, namenjena implementaciji **Mediator** obrasca u .NET aplikacijama. Mediator obrazac je bihejvioralni dizajnerski obrazac koji ima za cilj smanjenje direktne povezanosti između komponenti sistema tako što uvodi posrednički objekat (mediator) koji upravlja komunikacijom među njima.
 
 ### Ključne funkcije i prednosti:
@@ -127,12 +127,14 @@ MediatR je popularna open-source biblioteka u .NET okruženju, namenjena impleme
 - Slanje zahteva mediatoru - pozivom metode _mediator.Send(myCommand)
 - Rukovanje zahtevom - mediator pronalazi odgovarajući handler i prosleđuje mu zahtev na izvršenje.
 
-## 📝 Implementacija operacija pisanja (Commands)
+<h2 id="implementacija-operacija-pisanja-commands">📝 Implementacija operacija pisanja (Commands)</h2>
 U okviru CQRS pristupa, operacije koje menjaju stanje sistema realizuju se pomoću komandi (Commands). Komanda predstavlja objekat koji opisuje željenu akciju nad sistemom, ali ne sadrži samu poslovnu logiku — ona se delegira odgovarajućem handler-u u aplikacionom sloju.
 Primer toka izvršenja komande
 
 1. Kreiranje komande – kontroler kreira instancu komande sa svim potrebnim podacima.
-
+   ```bash
+   
+   ```
 2. Slanje komande mediatoru – komanda se šalje MediatR mediatoru.
 
 3. Izvršenje handler-a – mediator prosleđuje komandu odgovarajućem handler-u, koji obrađuje podatke, vrši validaciju i komunicira sa repozitorijumom ili infrastrukturnim servisima.
@@ -140,7 +142,7 @@ Primer toka izvršenja komande
 4. Povratna vrednost – handler vraća rezultat operacije (npr. ID novokreiranog entiteta ili status uspeha), koji se potom prosleđuje kontroleru i korisniku.
 
 Kroz ovakav pristup postiže se jasna separacija odgovornosti, olakšano testiranje i mogućnost skaliranja poslovne logike bez direktnog uplitanja prezentacionog sloja u domenske entitete.
-## 🔎 Implementacija operacija čitanja (Queries)
+<h2 id="implementacija-operacija-čitanja-queries">🔎 Implementacija operacija čitanja (Queries)</h2> 
 U CQRS pristupu, operacije koje služe za čitanje podataka realizuju se pomoću upita (Queries). Upit predstavlja objekat koji opisuje zahtev za podatke, bez menjanja stanja sistema. Logika obrade upita implementira se u odgovarajućem handler-u, dok prezentacioni sloj samo prosleđuje zahtev.
 ### Primer toka izvršenja upita
 1. Kreiranje upita – kontroler ili servis kreira instancu Query objekta sa potrebnim parametrima (npr. ID entiteta, filter kriterijum).
@@ -148,13 +150,15 @@ U CQRS pristupu, operacije koje služe za čitanje podataka realizuju se pomoću
 3. Izvršenje handler-a – mediator prosleđuje Query odgovarajućem handler-u, koji dohvaća podatke iz repozitorijuma, vrši mapiranje u DTO ili filtriranje, i priprema rezultat.
 4. Povratna vrednost – handler vraća rezultat (npr. entitet, lista entiteta ili agregirani podaci), koji se prosleđuje kontroleru i korisniku.
 
-## 🚀 Pokretanje i demonstracija rada aplikacije
+<h2 id="pokretanje-i-demonstracija-rada-aplikacije">🚀 Pokretanje i demonstracija rada aplikacije</h2>  
 Da biste pokrenuli lokalno, potrebno je imati instalirane sledeće alate:
 - .NET 8 SDK
 - SQL Server
-- Visal Studio 2022
-- ```bash dotnet tool install --global dotnet-ef ```
-## Preoporučeni NuGet paketi
+- Visual Studio 2022
+- ```dotnet tool install --global dotnet-ef ```
+## NuGet paketi
+Svi NuGet paketi korišćeni u projektu definisani su u .csproj fajlovima i automatski se preuzimaju prilikom ```dotnet restore``` ili ```dotnet build``` komande. Sledeći spisak paketa dat je informativno, radi boljeg razumevanja korišćenih tehnologija.
+
 **API (CQRSAndMediatR.Api)**
 - MediatR
 - Microsoft.EntityFrameworkCore.Design
@@ -188,6 +192,13 @@ dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.S
 dotnet add CQRSAndMediatR.Infrastructure package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 dotnet add CQRSAndMediatR.Infrastructure package Microsoft.EntityFrameworkCore.Tools
 ```
+### Konekcija sa bazom ###
+Prilikom prvog pokretanja projekta lokalno, potrebno je kreirati bazu podataka primenom Entity Framework Core migracija. Migracije automatski generišu potrebne tabele na osnovu definisanih entiteta u domenskom sloju.
+```bash
+dotnet ef database update \
+  --project CQRSAndMediatR.Infrastructure \
+  --startup-project CQRSAndMediatR.Api
+```
 ## Pokretanje API-ja
 Idite u API projekat:
 ```bash
@@ -197,20 +208,22 @@ Pokrenite aplikaciju:
 ```bash
 dotnet run
 ```
-Nakon uspešnog pokretanja, aplikacija je dostupna lokalnom URL-u, npr: [http://localhost:4200](http://localhost:5056/swagger/index.html)
+Nakon uspešnog pokretanja, aplikacija je dostupna lokalnom URL-u, npr: [http://localhost:5056/swagger/index.html](http://localhost:5056/swagger/index.html)
 Tamo možete:
 - Kreirati narudžbine (POST /api/orders)
 - Izmeniti narudžbine (PUT /api/orders/{orderId})
 - Obrišete narudžbine (DELETE /api/orders/{orderId})
 - Dohvatiti narudžbine (GET /api/orders)
 - Dohvatiti narudžbine po UsedId-u (GET /api/orders/user/{userId})
-  
-## Prednosti i mane CQRS pristupa
+
+![Swagger](images/dotnetrun.png)
+
+<h2 id="prednosti-i-mane-cqrs-pristupa">Prednosti i mane CQRS pristupa</h2>  
 ### 🛠️ Problemi koje CQRS rešava
 - Pojednostavljeni objekti za prenos podataka - CQRS obrazac pojednostavljuje model podataka aplikacije korišćenjem odvojenih modela za svaku vrstu operacije, čime povećava flekisbilnost i smanjuje složenost.
 - Skalabilnost - Odvajanjem operacija čitanja i pisanja, CQRS omogućava lakšu skalabilnost. Moguće je nezavisno skalirati stranu za čitanje i stranu za pisanje aplikacije kako bi se efikasno obradili različiti nivoi opterećenja.
 - Poboljšanje performansi - S obzirom na to da operacija čitanja učestalije od operacije pisanja, CQRS omogućava optimizaciju performansi čitanja primenom mehanizma keširanja, kao što su Redis ili MongoDB. Ovaj obrazac prirodno podržava tavke optimizacije, što doprinosti boljim ukupnim performansama sistema
-- Poboljšana konkurentnost i paralelizam - Korišćenjem posebnih modela za različite tipove operacija, CRS obezbeđuje bezbedno izvršavanje paralelnih operacija uz očuvanje integriteta podataka. Ovo je naročito značajno u sistemima u kojima se veliki broj operacija izvršava istovremeno.
+- Poboljšana konkurentnost i paralelizam - Korišćenjem posebnih modela za različite tipove operacija, CQRS obezbeđuje bezbedno izvršavanje paralelnih operacija uz očuvanje integriteta podataka. Ovo je naročito značajno u sistemima u kojima se veliki broj operacija izvršava istovremeno.
 - Povećana bezbednost - Razdvojeni pristup koji CQRS primenjuje doprinosti boljoj kontroli pristupa podacima. Jasno definisane granice između operacije čitanja i pisanja omogućavaju implementaciju preciznijih mehanizama autorizacije, čime se unapređuje ukupna bezbednost aplikacije.
 ### ⚠️ Nedostaci CQRS obrasca
 - Povećana složenost i obim koda – Implementacija CQRS obrasca često dovodi do povećanja složenosti sistema i količine potrebnog koda. Ovaj nedostatak proizilazi iz potrebe za održavanjem odvojenih modela i handler-a za operacije čitanja i pisanja, što može otežati razvoj, testiranje i otklanjanje grešaka.
@@ -219,13 +232,13 @@ Tamo možete:
 
 Iako CQRS povećava složenost, mnoge aplikacije opravdavaju ovaj nedostatak kroz prednosti poput nezavisne optimizacije za čitanje i pisanje, skalabilnosti i dugoročne održivosti sistema.
 
-## Zaključak
+<h2 id="zaključak"> Zaključak </h2>
 
 Implementacija CQRS obrasca u .NET aplikaciji uz korišćenje MediatR biblioteke omogućava jasno razdvajanje operacija čitanja i pisanja, što doprinosi modularnosti, testabilnosti i održivosti sistema. Kroz slojevitu arhitekturu (Domain, Application, Infrastructure i Presentation) postignuta je odvojena odgovornost slojeva, gde prezentacioni sloj prosleđuje zahteve aplikacionom sloju, dok se poslovna logika i pristup podacima implementiraju u handler-ima komandi i upita.
 Ovaj pristup omogućava:
 - bolju organizaciju i preglednost koda
 - lakše testiranje pojedinačnih komponenti
 - mogućnost skaliranja i nadogradnje sistema bez velikih promena postojećih slojeva.
-## Mogućnosti daljeg razvoja
+<h2 id="mogućnosti-daljeg-razvoja">Mogućnosti daljeg razvoja</h2>
 
 Dalji razvoj sistema može se ostvariti kroz dodavanje novih komandi i upita, integraciju sa složenijim domenima i primenu event-driven arhitekture. Moguća je i integracija sa modernim front-end framework-ovima te automatizacija testiranja i uvođenje CI/CD procesa, čime se obezbeđuje skalabilna, fleksibilna i dugoročno održiva aplikacija sa modularnom arhitekturom i jasnom separacijom odgovornosti.
