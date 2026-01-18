@@ -131,31 +131,109 @@ MediatR je popularna open-source biblioteka u .NET okruženju, namenjena impleme
 U okviru CQRS pristupa, operacije koje menjaju stanje sistema realizuju se pomoću komandi (Commands). Komanda predstavlja objekat koji opisuje željenu akciju nad sistemom, ali ne sadrži samu poslovnu logiku — ona se delegira odgovarajućem handler-u u aplikacionom sloju.
 Primer toka izvršenja komande
 
-1. Kreiranje komande – kontroler kreira instancu komande sa svim potrebnim podacima.
+**1. Kreiranje komande**
+   Kontroler inicira operaciju kreiranjem instance komande koja sadrži sve neophodne podatke za izvršenje poslovnog slučaja upotrebe.
    ```bash
-   
+   namespace Application.Commands;
+
+   public record CreateOrderCommand(string productName, int userId, decimal totalAmount) : IRequest<int>;
    ```
-2. Slanje komande mediatoru – komanda se šalje MediatR mediatoru.
-
-3. Izvršenje handler-a – mediator prosleđuje komandu odgovarajućem handler-u, koji obrađuje podatke, vrši validaciju i komunicira sa repozitorijumom ili infrastrukturnim servisima.
-
-4. Povratna vrednost – handler vraća rezultat operacije (npr. ID novokreiranog entiteta ili status uspeha), koji se potom prosleđuje kontroleru i korisniku.
+**2. Slanje komande mediatoru **
+   Komanda se prosleđuje MediatR mediatoru, koji preuzima odgovornost za njeno dalje procesiranje.
+   ```bash
+   [HttpPost]
+   public async Task<IActionResult> Create(CreateOrderCommand command)
+   {
+       var id = await _mediator.Send(command);
+       return Ok(id);
+   }
+   ```
+**3. Izvršenje handler-a**
+   MediatR pronalazi odgovarajući handler i prosleđuje mu komandu. Handler sadrži poslovnu logiku za kreiranje narudžbine i komunicira sa repozitorijumom definisanim u aplikacionom sloju.
+   public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
+   ```bash
+   using Application.Interfaces;
+   using Domain.Entities;
+   using Domain.Enums;
+   using MediatR;
+   {
+       private readonly IOrderRepository _orderRepository;
+    
+       public CreateOrderCommandHandler(IOrderRepository orderRepository)
+       {
+            _orderRepository = orderRepository;
+       }
+       public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+       {
+            var newOrder = new Order
+            {
+                ProductName = request.productName,
+                TotalAmount = request.totalAmount,
+                UserId = request.userId,
+                Created = DateTime.UtcNow,
+                Status = OrderStatus.Created
+            };
+    
+            return await _orderRepository.CreateAsync(newOrder);
+        }
+    }
+   ```
+**4. Povratna vrednost** 
+Handler vraća rezultat izvršene operacije (identifikator novokreirane narudžbine), koji se zatim preko MediatR-a prosleđuje kontroleru i vraća klijentu kao odgovor na HTTP zahtev.
 
 Kroz ovakav pristup postiže se jasna separacija odgovornosti, olakšano testiranje i mogućnost skaliranja poslovne logike bez direktnog uplitanja prezentacionog sloja u domenske entitete.
 <h2 id="implementacija-operacija-čitanja-queries">🔎 Implementacija operacija čitanja (Queries)</h2> 
 U CQRS pristupu, operacije koje služe za čitanje podataka realizuju se pomoću upita (Queries). Upit predstavlja objekat koji opisuje zahtev za podatke, bez menjanja stanja sistema. Logika obrade upita implementira se u odgovarajućem handler-u, dok prezentacioni sloj samo prosleđuje zahtev.
 ### Primer toka izvršenja upita
 1. Kreiranje upita – kontroler ili servis kreira instancu Query objekta sa potrebnim parametrima (npr. ID entiteta, filter kriterijum).
+```bash
+namespace Application.Queries;
+
+public record GetOrderQuery(int Id) : IRequest<Order>;
+```
 2. Slanje upita mediatoru – Query se prosleđuje MediatR mediatoru.
+```bash
+ [HttpGet]
+ public async Task<Order> Get(int id)
+ {
+     var result = await _mediator.Send(new GetOrderQuery(id));
+
+     return result;
+ }
+``` 
 3. Izvršenje handler-a – mediator prosleđuje Query odgovarajućem handler-u, koji dohvaća podatke iz repozitorijuma, vrši mapiranje u DTO ili filtriranje, i priprema rezultat.
+```bash
+using Application.Interfaces;
+using Domain.Entities;
+using MediatR;
+
+namespace Application.Queries;
+
+public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, Order>
+{
+    private readonly IOrderRepository _orderRepository;
+
+    public GetOrderQueryHandler(IOrderRepository orderRepository)
+    {
+        _orderRepository = orderRepository;
+    }
+
+    public async Task<Order> Handle(GetOrderQuery request, CancellationToken cancellationToken)
+    {
+        return await _orderRepository.GetByIdAsync(request.Id);
+    }
+}
+```  
 4. Povratna vrednost – handler vraća rezultat (npr. entitet, lista entiteta ili agregirani podaci), koji se prosleđuje kontroleru i korisniku.
 
 <h2 id="pokretanje-i-demonstracija-rada-aplikacije">🚀 Pokretanje i demonstracija rada aplikacije</h2>  
+
 Da biste pokrenuli lokalno, potrebno je imati instalirane sledeće alate:
 - .NET 8 SDK
 - SQL Server
 - Visual Studio 2022
 - ```dotnet tool install --global dotnet-ef ```
+
 ## NuGet paketi
 Svi NuGet paketi korišćeni u projektu definisani su u .csproj fajlovima i automatski se preuzimaju prilikom ```dotnet restore``` ili ```dotnet build``` komande. Sledeći spisak paketa dat je informativno, radi boljeg razumevanja korišćenih tehnologija.
 
@@ -214,7 +292,7 @@ Tamo možete:
 - Izmeniti narudžbine (PUT /api/orders/{orderId})
 - Obrišete narudžbine (DELETE /api/orders/{orderId})
 - Dohvatiti narudžbine (GET /api/orders)
-- Dohvatiti narudžbine po UsedId-u (GET /api/orders/user/{userId})
+- Dohvatiti narudžbine po UserId-u (GET /api/orders/user/{userId})
 
 ![Swagger](images/dotnetrun.png)
 
